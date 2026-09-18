@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hogger, Warlord of the Riverpaw | Encounter Design Pitch</title>
+<meta name="description" content="An encounter design pitch reimagining Hogger as a 5-player instanced boss, written for World of Warcraft: Forever.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12181a;
+    --panel: #1a2220;
+    --panel-alt: #202b26;
+    --border: #33403a;
+    --ember: #c9701c;
+    --ember-bright: #e0913f;
+    --blood: #a3402f;
+    --parchment: #ece4d3;
+    --parchment-dim: #c9c0ac;
+    --sage: #91a293;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(201,112,28,0.12), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 20%, rgba(163,64,47,0.08), transparent 55%);
+    color: var(--parchment);
+    font-family: 'Karla', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Bitter', serif;
+    color: var(--parchment);
+    margin: 0 0 0.5em;
+  }
+
+  a { color: var(--ember-bright); }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.hero {
+    padding: 86px 0 56px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    color: var(--sage);
+    font-size: 0.92rem;
+    margin-bottom: 18px;
+  }
+
+  .eyebrow a { color: var(--sage); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--parchment-dim);
+    max-width: 58ch;
+    margin-top: 10px;
+  }
+
+  .fight-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 34px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .fight-meta div {
+    min-width: 140px;
+  }
+
+  .fight-meta .label {
+    font-size: 0.82rem;
+    color: var(--sage);
+    margin-bottom: 3px;
+  }
+
+  .fight-meta .value {
+    font-family: 'Bitter', serif;
+    font-weight: 600;
+    color: var(--ember-bright);
+  }
+
+  section { padding: 56px 0; }
+  section + section { border-top: 1px solid var(--border); }
+
+  .story-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ember);
+    border-radius: 3px;
+    padding: 28px 30px;
+  }
+
+  .story-panel .who {
+    font-family: 'Bitter', serif;
+    font-weight: 600;
+    color: var(--ember-bright);
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+
+  .story-panel p {
+    font-style: italic;
+    color: var(--parchment-dim);
+    margin: 0;
+  }
+
+  .quest-steps {
+    margin-top: 22px;
+    padding-left: 20px;
+  }
+
+  .quest-steps li { margin-bottom: 10px; color: var(--parchment-dim); }
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  .section-sub {
+    color: var(--sage);
+    margin-bottom: 26px;
+    font-size: 1rem;
+  }
+
+  .phase-marker {
+    display: inline-block;
+    font-family: 'Bitter', serif;
+    font-weight: 600;
+    color: var(--bg);
+    background: var(--ember);
+    padding: 3px 12px;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  .phase-marker.p3 { background: var(--blood); }
+
+  .mechanic-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 22px 24px;
+    margin-top: 16px;
+  }
+
+  .mechanic-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .mechanic-name {
+    font-family: 'Bitter', serif;
+    font-weight: 600;
+    font-size: 1.08rem;
+  }
+
+  .tag {
+    font-size: 0.78rem;
+    color: var(--sage);
+    border: 1px solid var(--border);
+    padding: 2px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .mechanic-card p { margin: 0 0 12px; color: var(--parchment-dim); }
+
+  .intent {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 4px;
+    font-size: 0.95rem;
+  }
+
+  .intent .intent-label {
+    color: var(--ember-bright);
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  .tuning-panel, .why-panel {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 26px 28px;
+  }
+
+  .tuning-panel p, .why-panel p { color: var(--parchment-dim); margin: 0; }
+
+  .scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .scope-grid h3 {
+    font-size: 0.95rem;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .scope-grid ul { margin: 0; padding-left: 18px; color: var(--parchment-dim); font-size: 0.95rem; }
+  .scope-grid li { margin-bottom: 6px; }
+
+  @media (max-width: 560px) {
+    header.hero { padding: 56px 0 40px; }
+    h1 { font-size: 1.9rem; }
+    .scope-grid { grid-template-columns: 1fr; }
+  }
+
+  footer {
+    padding: 40px 0 70px;
+    color: var(--sage);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Encounter Design Pitch · <a href="#">Dan Manez — Design Work</a></div>
+    <h1>Hogger, Warlord of the Riverpaw</h1>
+    <p class="hero-sub">A reimagined 5-player encounter, written for World of Warcraft: Forever's expanded early-game content.</p>
+
+    <div class="fight-meta">
+      <div>
+        <div class="label">Format</div>
+        <div class="value">5-Player Instanced</div>
+      </div>
+      <div>
+        <div class="label">Setting</div>
+        <div class="value">Elwynn Forest</div>
+      </div>
+      <div>
+        <div class="label">Content Type</div>
+        <div class="value">Outdoor-World Boss</div>
+      </div>
+      <div>
+        <div class="label">Phases</div>
+        <div class="value">Three, Health-Gated</div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>The Riverpaw Don't Forget</h2>
+    <p class="section-sub">A short quest chain sets up the encounter before it begins.</p>
+
+    <div class="story-panel">
+      <div class="who">Marshal McBride — Northshire Abbey</div>
+      <p>"Used to be, Hogger was a joke. Something you laughed about after you outleveled him. But the caravans coming up from Goldshire this week, they're saying the Riverpaw's not scattering like they used to. They're regrouping. Digging in around the old camp east of the crossroads. Somebody's holding that pack together, and it isn't fear of us anymore."</p>
+    </div>
+
+    <ol class="quest-steps">
+      <li>Investigate the abandoned caravan wreckage near the Fold. Gnoll totems are arranged with unusual deliberateness, not scavenged, placed.</li>
+      <li>Interrogate a captured Riverpaw scout who won't break under threat, but breaks a little at the mention of a name, said with something closer to reverence than the old snarling.</li>
+      <li>Approach the camp itself at dusk. Multiple fires burn in a ring formation. This is the encounter's cold open, the staging ground before the fight starts.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Concept</h2>
+    <p class="section-sub">Why reimagine a starter-zone joke as a real fight</p>
+    <p style="color: var(--parchment-dim); max-width: 62ch;">Hogger was never actually dangerous, he was just disproportionate for a level 6 character. The joke was the gap between his reputation and his mechanics. This encounter closes that gap on purpose. Same Hogger, same Riverpaw gnolls, same Elwynn camp, but built as if the community's decade of memes about him were true all along. The goal is recognition, not surprise: players should feel like they're finally getting the fight they always joked he should have been.</p>
+  </section>
+
+  <section>
+    <h2>The Encounter</h2>
+    <p class="section-sub">Existing Riverpaw camp, expanded. Tents ring a central bonfire, smaller campfires hold the perimeter.</p>
+
+    <span class="phase-marker">Phase 1 — The Warband</span>
+
+    <div class="mechanic-card">
+      <div class="mechanic-head">
+        <span class="mechanic-name">Tent Spawns</span>
+        <span class="tag">Add Pressure</span>
+      </div>
+      <p>Hogger doesn't start alone. Two to three Riverpaw gnoll adds are already up, pulled from the surrounding tents. An unaddressed tent periodically pushes a fresh add into the fight.</p>
+      <div class="intent"><span class="intent-label">Design intent:</span>The environment is something you fight, not just stand in. Tents turn the camp itself into a pressure source from the first pull.</div>
+    </div>
+
+    <div class="mechanic-card">
+      <div class="mechanic-head">
+        <span class="mechanic-name">Collapse Tent</span>
+        <span class="tag">Player Action</span>
+      </div>
+      <p>Players can interact with a tent and channel briefly to shut off that spawn point permanently, trading time and exposure for reduced add pressure later.</p>
+      <div class="intent"><span class="intent-label">Design intent:</span>A visible, optional cost-benefit choice in Phase 1, not a required mechanic, but one with a real payoff two phases later.</div>
+    </div>
+
+    <span class="phase-marker" style="margin-top:40px; display:inline-block;">Phase 2 — Riverpaw Don't Break</span>
+
+    <div class="mechanic-card">
+      <div class="mechanic-head">
+        <span class="mechanic-name">Camp-Wide Alarm</span>
+        <span class="tag">Phase Transition</span>
+      </div>
+      <p>At 66%, Hogger drags a Riverpaw totem into the central bonfire. Every remaining tent pushes an add simultaneously, once.</p>
+      <div class="intent"><span class="intent-label">Design intent:</span>Direct payoff for Phase 1's tent-collapsing, not a flat difficulty gate. A group that prepared faces a proportionally smaller wave.</div>
+    </div>
+
+    <div class="mechanic-card">
+      <div class="mechanic-head">
+        <span class="mechanic-name">Bonfire Zeal</span>
+        <span class="tag">Buff</span>
+      </div>
+      <p>Hogger gains a temporary damage buff tied to proximity to the central bonfire he's trying to hold.</p>
+      <div class="intent"><span class="intent-label">Design intent:</span>Incentivizes fighting the encounter away from the fire, turning positioning into an active decision instead of a static tank spot.</div>
+    </div>
+
+    <span class="phase-marker p3" style="margin-top:40px; display:inline-block;">Phase 3 — The Old Fear</span>
+
+    <div class="mechanic-card">
+      <div class="mechanic-head">
+        <span class="mechanic-name">The Fire Goes Out</span>
+        <span class="tag">Phase Transition</span>
+      </div>
+      <p>At 33%, Hogger extinguishes the central bonfire himself, a scripted animation beat. In the dark, his damage output increases.</p>
+      <div class="intent"><span class="intent-label">Design intent:</span>The camp's centerpiece flips from Hogger's power source to the source of the fight's final threat.</div>
+    </div>
+
+    <div class="mechanic-card">
+      <div class="mechanic-head">
+        <span class="mechanic-name">Campfire Sanctuary</span>
+        <span class="tag">Signature Mechanic</span>
+      </div>
+      <p>Every perimeter campfire still standing casts a small radius of light that suppresses Hogger's darkness buff while players stand in it.</p>
+      <div class="intent"><span class="intent-label">Design intent:</span>The fight's signature moment. The same environmental objects that were a spawn hazard in Phase 1 become the only source of safety in Phase 3, driven entirely by the story beat, not a new asset.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pacing and Tuning Intent</h2>
+    <div class="tuning-panel">
+      <p>Phase transitions are health-gated, not timer-gated, rewarding damage output over clock management. There is no hard enrage. Failure pressure instead comes from unaddressed tent spawns compounding into Phase 2's alarm wave, a group that brute-forces Phase 1 creates its own difficulty spike rather than facing an arbitrary timer. Exact phase durations and specific health thresholds would be set through playtesting against real group DPS, not fixed at design time.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why This Works as a Pitch Example</h2>
+    <div class="why-panel">
+      <p>Every mechanic maps to something that already exists in the zone, tents, campfires, gnoll pack behavior, rather than introducing new lore or assets. Reimagining existing content credibly is a different, and arguably harder, design skill than inventing from nothing, and it's the skill Forever's expanded-zone content actually needs.</p>
+    </div>
+
+    <div class="scope-grid">
+      <div>
+        <h3>Included</h3>
+        <ul>
+          <li>Full phase and mechanic breakdown</li>
+          <li>Environmental interaction design</li>
+          <li>Narrative setup tied to mechanics</li>
+          <li>Explicit pacing and tuning philosophy</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Not Included</h3>
+        <ul>
+          <li>Final numerical tuning</li>
+          <li>Full quest chain implementation</li>
+          <li>Ability icon and VFX treatment</li>
+          <li>Encounter-specific loot table</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Written as a design pitch sample for Blizzard Entertainment's Associate Game Designer, Encounters application. Part of a broader body of World of Warcraft systems and encounter design work by Dan Manez.
+  </footer>
+
+</div>
+
+</body>
+</html>
